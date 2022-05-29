@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>
+            <%=title%>
+        </title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery.ui.position.min.js"></script>
+    </head>
+
+    <body>
+        <nav class="flex row">
+            <a href="/users/signOut"><button class="custom_button hover_button" title="Sign Out">SIGN OUT</button></a>
+        </nav>
+        <% if(flash.success && flash.success.length> 0) {%>
+            <h3 style="color: green;">
+                <%= flash.success %>
+            </h3>
+            <%}%>
+                <% if(flash.error && flash.error.length> 0) {%>
+                    <h3 style="color: red;">
+                        <%= flash.error %>
+                    </h3>
+                    <%}%>
+        <h1>Reviews requiring feedback</h1>
+        <div id="review_list" style="margin:40px;">
+            <% for(let review of reviewList) {%>
+                <button class="collapsible">
+                    <%= review.employeeId.name%> ( <%= review.employeeId.email %>) 
+                </button>
+                <div class="content">
+                    <ul>
+                        <li>
+                            <label for="feedback">Feedback</label>
+                            <input type="text" class="feedback_input" name="feedback" style="width:500px;font-family: cursive;">
+                            <button class="submit_feedback li_button" data-empId="<%= employee._id%>" data-candidateId="<%= review.employeeId._id%>"
+                                data-email="<%= employee.email%>"" style="top:10px;width:fit-content;" title="Submit Feedback">Submit</button></a>
+                        </li>
+                    </ul>
+                </div>
+            <%}%>
+        </div>
+    </body>
+    <script type="text/javascript" src="/js/script.js"></script>
+    <script type="text/javascript" src="/js/feedback.js"></script>
+</html>

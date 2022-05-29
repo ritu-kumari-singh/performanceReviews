@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>
+            <%=title%>
+        </title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery.ui.position.min.js"></script>
+    </head>
+
+    <body>
+        <%- include('_headerAdmin'); %>
+            <button id="add_new_review" style="top:10px;width:fit-content;" class="custom_button hover_button"
+                title="Add new review">+ New Review</button></a>
+            <div id="review_list" style="margin:40px;">
+                <% for(let review of reviewList) {%>
+                    <button class="collapsible">
+                        <%= review.employeeId.name %>
+                    </button>
+                    <div class="content">
+                        <ul>
+                            <li style="text-align: left;padding:5px;">Name : <%= review.employeeId.name %>
+                            </li>
+                            <li style="text-align: left;padding:5px;">Email : <%= review.employeeId.email %>
+                            </li>
+                            <li style="text-align: left;padding:5px;">
+                                <% if(review.employeeId.admin=="true" ) { %>
+                                    Role: Admin
+                                    <% } else { %>
+                                        Role: Employee
+                                        <% } %>
+                            </li>
+                            <h4>Feedback Received</h4>
+                            <% for(let feedback of review.feedback) {%>
+                                <li style="text-align: left;padding:5px;"><%= feedback.email %> : <%= feedback.content %>
+                                </li>
+                            <% } %>
+                            <h4>Assigned To</h4>
+                            <% for(let assignee of review.assigned) {%>
+                                <li style="text-align: left;padding:5px;">
+                                    <%= assignee.name %> ( <%= assignee.email %> )
+                                </li>
+                                <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div>
+            <div id="new_review_form" style="display: none;padding:20px;">
+                <form action="/users/reviews/create_review" method="post">
+                    <div class="flex column spaced" style="height:fit-content;">
+                        <div class="flex row">
+                            <label>Email</label>
+                            <input type="email" name="email" placeholder="Enter employee email">
+                        </div>
+                        <button class="custom_button" style="top:10px;">ADD REVIEW</button>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript" src="/js/script.js"></script>
+            <script type="text/javascript" src="/js/review.js"></script>
+    </body>
+</html>

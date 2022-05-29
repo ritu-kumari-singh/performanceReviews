@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>
+            <%=title%>
+        </title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery.ui.position.min.js"></script>
+    </head>
+
+    <body>
+        <%- include('_headerAdmin'); %>
+        <button id="add_new_employee" style="top:10px;width:fit-content;" class="custom_button hover_button"
+            title="Add new employee">+ New employee</button></a>
+        <div id="employee_list" style="margin:40px;">
+            <% for(let employee of employeeList) {%>
+                <% if(!employee._id.equals(userId)) { %>
+                    <button class="collapsible">
+                        <%= employee.name %>
+                    </button>
+                    <div class="content">
+                        <ul>
+                            <li style="text-align: left;padding:5px;">Name : <%= employee.name %>
+                            </li>
+                            <li style="text-align: left;padding:5px;">Email : <%= employee.email %>
+                            </li>
+                            <li style="text-align: left;padding:5px;">
+                                <% if(employee.admin=="true" ) { %>
+                                    Role: Admin
+                                    <% } else { %>
+                                        Role: Employee
+                                        <% } %>
+                            </li>
+                            <li class="flex row" style="text-align: left;padding:5px;justify-content: flex-start;">
+                                <% if(employee.admin !="true" ) { %>
+                                    <button class="update_employee li_button" data-empId="<%= employee._id%>"
+                                        style="top:10px;width:fit-content;margin-right: 20px;" title="Update employee">Make
+                                        Admin</button></a>
+                                    <% } %>
+                                        <button class="delete_employee li_button" data-empId="<%= employee._id%>"
+                                            style="top:10px;width:fit-content;background-color: rgb(184, 70, 70);"
+                                            title="Delete employee">Remove</button></a>
+                            </li>
+                            <h3>Actions</h3>
+                            <li>
+                                <select name="review_employees" id="review_employees">
+                                    <option value="">--Please choose an employee--</option>
+                                    <% for(let review of reviewList) {%>
+                                        <% if(!review.employeeId._id.equals(employee._id) && !review.assigned.includes(employee._id)) { %>
+                                            <option value="<%= review._id%>">
+                                                <%= review.employeeId.name %> ( <%= review.employeeId.email %> )
+                                            </option>
+                                        <% } %>
+                                    <% } %>
+                                </select>
+                                <button class="assign_review li_button" data-empId="<%= employee._id%>" style="width:fit-content;height:40px;font-size:15px;"
+                                    title="Assign Review">Assign Review</button></a>
+                            </li>
+                        </ul>
+                    </div>
+                <% } %>
+            <%}%>
+        </div>
+        <div id="new_employee_form" style="display: none;padding:20px;">
+            <form action="/users/employees/create_employee" method="post">
+                <div class="flex column spaced" style="height:fit-content;">
+                    <div class="flex row">
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="Enter employee name">
+                    </div>
+                    <div class="flex row">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Enter employee email">
+                    </div>
+                    <div class="flex row">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Enter employee password">
+                    </div>
+                    <div class="flex row">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirm_password" placeholder="Confirm employee password">
+                    </div>
+                    <button class="custom_button" style="top:10px;">ADD EMPLOYEE</button>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript" src="/js/script.js"></script>
+        <script type="text/javascript" src="/js/employee.js"></script>
+    </body>
+</html>
